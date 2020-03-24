@@ -4,11 +4,15 @@ name: argos-release
 type: docker
 
 steps:
+  - name: check license
+    image: rabobanknl/argos-build:latest
+    commands:
+    - mvn license:check
   - name: build integrated image
     image: plugins/docker
     settings:
       context: docker
-      repo: rabobanknl/argos-snapshot
+      repo: argosnotary/argos-snapshot
       tags: ${DRONE_BRANCH/\//_}${DRONE_TAG}
       username:
         from_secret: docker_login_user
@@ -22,7 +26,7 @@ steps:
     image: plugins/docker
     settings:
       context: docker
-      repo: rabobanknl/argos
+      repo: argosnotary/argos
       auto_tag: true
       build_args:
         - VERSION=${DRONE_TAG}
@@ -32,8 +36,7 @@ steps:
         from_secret: docker_login_token
     when:
       event:
-        - tag
-     
+        - tag     
       
 trigger:
   event:

@@ -186,8 +186,6 @@ RUN wget https://repo1.maven.org/maven2/com/rabobank/argos/argos-service/${ARGOS
     -O /usr/lib/argos/argos-service.jar \
     && echo "${ARGOS_SERVICE_SHA1}  /usr/lib/argos/argos-service.jar" | sha1sum -c
 
-COPY oauth-stub/mappings /usr/lib/argos/oauth/mappings
-
 COPY resources /tmp/resources
 
 ENV BACKEND_URL=http://localhost:8080

@@ -28,7 +28,7 @@ image() {
   docker build \
     --build-arg ARGOS_VERSION=${ARGOS_VERSION} \
     --tag ${build_image} \
-  docker
+  .
 }
 
 push() {

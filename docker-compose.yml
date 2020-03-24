@@ -17,7 +17,6 @@
 version: '3.1'
 
 services:
-
   argos-frontend:
     image: rabobanknl/argos-frontend:0.0.1-RC3
     environment:

@@ -1,0 +1,42 @@
+---
+kind: pipeline
+name: argos-release
+type: docker
+
+steps:
+  - name: build integrated image
+    image: plugins/docker
+    settings:
+      context: docker
+      repo: rabobanknl/argos-snapshot
+      tags: ${DRONE_BRANCH/\//_}${DRONE_TAG}
+      username:
+        from_secret: docker_login_user
+      password:
+        from_secret: docker_login_token
+    when:
+      event:
+        - push
+        
+  - name: build and release integrated image
+    image: plugins/docker
+    settings:
+      context: docker
+      repo: rabobanknl/argos
+      auto_tag: true
+      build_args:
+        - VERSION=${DRONE_TAG}
+      username:
+        from_secret: docker_login_user
+      password:
+        from_secret: docker_login_token
+    when:
+      event:
+        - tag
+     
+      
+trigger:
+  event:
+    - push
+    - tag
+

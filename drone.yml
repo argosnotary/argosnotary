@@ -16,6 +16,8 @@ steps:
       dockerfile: docker/Dockerfile
       repo: argosnotary/argos-snapshot
       tags: ${DRONE_BRANCH/\//_}${DRONE_TAG}
+      build_args:
+        - ARGOS_VERSION=${DRONE_BRANCH/\//_}${DRONE_TAG}
       username:
         from_secret: docker_login_user
       password:
@@ -32,7 +34,7 @@ steps:
       repo: argosnotary/argos
       auto_tag: true
       build_args:
-        - VERSION=${DRONE_TAG}
+        - ARGOS_VERSION=${DRONE_TAG}
       username:
         from_secret: docker_login_user
       password:

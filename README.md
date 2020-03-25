@@ -1,2 +1,2 @@
-Argos Software Supply Chain Notary ![Drone (cloud)](https://img.shields.io/drone/build/argosnotary/argos)
+Argos Software Supply Chain Notary [![Build Status](https://cloud.drone.io/api/badges/argosnotary/argos/status.svg)](https://cloud.drone.io/argosnotary/argos)
 ===============

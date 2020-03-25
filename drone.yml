@@ -8,7 +8,8 @@ steps:
     image: rabobanknl/argos-build:latest
     commands:
     - mvn license:check
-  - name: build integrated image
+ 
+  - name: build integrated snapshot image
     image: plugins/docker
     settings:
       context: docker

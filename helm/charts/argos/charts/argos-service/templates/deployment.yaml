@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "argos-service.fullname" . }}
+  labels:
+    {{- include "argos-service.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "argos-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "argos-service.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "argos-service.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: auth.frontendRedirectBasePath
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "argos-service.fullname" . }}-configmap
+                key: auth.frontendRedirectBasePath
+          - name: server.use-forward-headers
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "argos-service.fullname" . }}-configmap
+                key: server.use-forward-headers
+          - name: azure-client-provider-userInfoUri
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "argos-service.fullname" . }}-configmap
+                key: azure-client-provider-user-info-uri
+          - name: spring.security.oauth2.client.provider.azure.userInfoUri
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "argos-service.fullname" . }}-configmap
+                key: azure-client-provider-user-info-uri
+          - name: spring.data.mongodb.uri
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "argos-service.fullname" . }}-secret
+                key: mongodb-uri
+          - name: jwt.token.secret
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "argos-service.fullname" . }}-secret
+                key: jwt.token.secret
+          - name: spring.security.oauth2.client.registration.azure.clientId
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "argos-service.fullname" . }}-secret
+                key: azure-client-id
+          - name: spring.security.oauth2.client.registration.azure.clientSecret
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "argos-service.fullname" . }}-secret
+                key: azure-client-secret
+          - name: spring.security.oauth2.client.provider.azure.authorizationUri
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "argos-service.fullname" . }}-secret
+                key: azure.authorizationUri
+          - name: spring.security.oauth2.client.provider.azure.tokenUri
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "argos-service.fullname" . }}-secret
+                key: azure.tokenUri
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

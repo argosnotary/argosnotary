@@ -1,0 +1,46 @@
+{{- if eq .Values.global.platform "gke" }}
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "argos-frontend.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: argosnotary-ip-address
+spec:
+  location: global
+---
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: argos-cert
+spec:
+  domains:
+    - argos-test.argosnotary.com
+    - notary.argosnotary.com
+    - docs.argosnotary.com
+    - www.argosnotary.com
+---
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "argos-frontend.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+    networking.gke.io/managed-certificates: argos-cert
+spec:
+  tls:
+    - secretName: first-secret-name
+    - secretName: second-secret-name
+  backend:
+    serviceName: {{ $fullName }}
+    servicePort: {{ $svcPort }}
+{{- end }}
+{{- end }}

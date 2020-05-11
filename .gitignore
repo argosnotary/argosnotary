@@ -1,1 +1,4 @@
 /.project
+**/tls.cert
+**/tls.key
+**/*.tgz

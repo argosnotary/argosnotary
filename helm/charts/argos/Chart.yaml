@@ -1,0 +1,23 @@
+apiVersion: v2
+name: argos
+version: 0.0.1
+description: Argos Notary Service
+home: https://github.com/argosnotary/argos
+keywords:
+  - argos
+  - notary
+type: application
+sources:
+  - https://github.com/argosnotary
+dependencies:
+  - name: mongodb
+    version: 7.14.0
+    repository: https://charts.bitnami.com/bitnami
+  - name: oauth-stub
+    version: 0.0.1-RC5
+    condition: oauth-stub.enabled
+maintainers:
+  - name: Gerard Borst
+  - name: Michel Durieux
+icon: A URL to an SVG or PNG image to be used as an icon (optional).
+appVersion: 0.0.1-RC5

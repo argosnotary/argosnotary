@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  server.use-forward-headers: 'true'
+  auth.frontendRedirectBasePath: {{ .Values.aad.frontendRedirectBasePath | quote }}
+  azure-client-provider-user-info-uri: {{ .Values.aad.client_provider_user_info_url }}
+kind: ConfigMap
+metadata:
+  name: {{ include "argos-service.fullname" . }}-configmap

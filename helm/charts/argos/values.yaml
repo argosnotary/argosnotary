@@ -1,0 +1,27 @@
+
+global:
+  # choose between minikube, gke, aks
+  platform: minikube
+  
+oauth-stub:
+  enabled: true
+
+mongodb:
+  replicaSet:
+    enabled: false
+    key: password
+  usePassword: false
+  persistence:
+    size: 1Gi
+
+ingress:
+  enabled: true
+  hosts:
+    - host: argos-frontend.minikube.local
+      paths:
+        - /
+  tls:
+    - secretName: argos-frontend-minikube-tls
+      hosts:
+        - argos-frontend.minikube.local
+  

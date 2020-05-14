@@ -5,7 +5,7 @@ type: docker
 
 steps:
   - name: check license
-    image: rabobanknl/argos-build:latest
+    image: argosnotary/argos-build:latest
     commands:
     - mvn license:check
  

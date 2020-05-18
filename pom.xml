@@ -46,6 +46,7 @@
 						<exclude>**/publickey</exclude>
 						<exclude>**/testkey.pub</exclude>
 						<exclude>**/bob</exclude>
+                        <exclude>helm/**/*.yaml</exclude>
 					</excludes>
 					<useDefaultExcludes>true</useDefaultExcludes>
 					<properties>

@@ -16,7 +16,11 @@
 
 ARG ARGOS_VERSION
 
-FROM rabobanknl/argos-frontend:${ARGOS_VERSION} as frontend
+FROM argosnotary/argos-frontend:${ARGOS_VERSION} as frontend
+
+FROM argosnotary/argos-service:${ARGOS_VERSION} as argos-service
+
+FROM argosnotary/argos-integration-test-stub:master as oauth-stub
 
 FROM phusion/baseimage:0.11 as run-server-stage
 
@@ -163,7 +167,8 @@ RUN mkdir -p /var/wiremock/lib/ /usr/lib/argos/oauth/mappings \
   && wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/$WIREMOCK_VERSION/wiremock-standalone-$WIREMOCK_VERSION.jar \
     -O /var/wiremock/lib/wiremock-standalone.jar
 
-COPY oauth-stub/mappings /usr/lib/argos/oauth/mappings
+COPY --from=oauth-stub /home/wiremock/mappings /usr/lib/argos/oauth/mappings
+COPY --from=oauth-stub /home/wiremock/__files /usr/lib/argos/oauth/__files
 
 ######################################################################
 # End install oauth stub
@@ -177,14 +182,9 @@ RUN set -x \
 
 COPY --from=frontend /usr/share/nginx/html/ /usr/share/nginx/html
 COPY --from=frontend /etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=frontend /nginx.conf.template /
+COPY --from=frontend /image_config/nginx.conf.template /
 
-ENV ARGOS_SERVICE_SHA1 ed01e4e9e12d24dc627a3e8d8c69bf2cf12765d1
-ARG ARGOS_VERSION
-
-RUN wget https://repo1.maven.org/maven2/com/rabobank/argos/argos-service/${ARGOS_VERSION}/argos-service-${ARGOS_VERSION}.jar \
-    -O /usr/lib/argos/argos-service.jar \
-    && echo "${ARGOS_SERVICE_SHA1}  /usr/lib/argos/argos-service.jar" | sha1sum -c
+COPY --from=argos-service /argos-service.jar /usr/lib/argos/argos-service.jar
 
 COPY resources /tmp/resources
 
@@ -193,7 +193,7 @@ ENV BACKEND_URL=http://localhost:8080
 ENV spring.data.mongodb.uri                                       mongodb://localhost/test
 ENV spring.security.oauth2.client.registration.azure.clientId     client-id
 ENV spring.security.oauth2.client.registration.azure.clientSecret client-secret
-ENV spring.security.oauth2.client.provider.azure.authorizationUri http://localhost:8087/oauth2/v2.0/authorize
+ENV spring.security.oauth2.client.provider.azure.authorizationUri http://localhost:8087/oauth2/v2.0/authorize-manual
 ENV spring.security.oauth2.client.provider.azure.tokenUri         http://localhost:8087/oauth2/v2.0/token
 ENV spring.security.oauth2.client.provider.azure.userInfoUri      http://localhost:8087/v1.0/me
 ENV jwt.token.secret                                              Z2LcVpgCuGtpb5rBDNIIWGe8RXqYGWDpWFjWhYQUS2Z8rjE2/GTJlu0s6BRYG0Mn0kV8StC9cFE83Jkl68RCkw==

@@ -16,8 +16,8 @@
 #
 
 set -x
-ARGOS_VERSION="0.0.1-RC3"
-REGISTRY="rabobanknl"
+ARGOS_VERSION="0.0.1-RC5"
+REGISTRY="argosnotary"
 IMAGE_NAME="argos-snapshot"
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 build_image=${REGISTRY}/${IMAGE_NAME}:${GIT_BRANCH}

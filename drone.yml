@@ -30,8 +30,8 @@ steps:
     image: argosnotary/argos-build:3.6.3
     commands:
     - cd helm/charts
-    - helm chart save argos/ argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
-    - helm chart push argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
+    - helm chart save argos/ "argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}"
+    - helm chart push "argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}"
     when:
       event:
         - push
@@ -57,9 +57,9 @@ steps:
     image: argosnotary/argos-build:3.6.3
     commands:
     - cd helm/charts
-    - helm chart save argos/ argosnotary/argos-chart:${DRONE_TAG}
+    - helm chart save argos/ "argosnotary/argos-chart:${DRONE_TAG}"
     - helm chart save argos/ argosnotary/argos-chart:latest
-    - helm chart push argosnotary/argos-chart:${DRONE_TAG}
+    - helm chart push "argosnotary/argos-chart:${DRONE_TAG}"
     - helm chart save argos/ argosnotary/argos-chart:latest
     when:
       event:

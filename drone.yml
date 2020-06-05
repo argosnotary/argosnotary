@@ -29,7 +29,7 @@ steps:
     - check license
     
   - name: argossnashot
-    image: curlimages/curl
+    image: argosnotary/argos-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
     when:
       event:
@@ -85,7 +85,7 @@ steps:
     - check license
     
   - name: argos
-    image: curlimages/curl
+    image: argosnotary/argos:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
     when:
       event:

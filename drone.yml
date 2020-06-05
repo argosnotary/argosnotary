@@ -25,6 +25,8 @@ steps:
     when:
       event:
         - push
+    depends_on:
+    - check license
         
   - name: build helm snapshot chart
     image: argosnotary/argos-build:3.6.3
@@ -35,6 +37,8 @@ steps:
     when:
       event:
         - push
+    depends_on:
+    - check license
         
   - name: build and release integrated image
     image: plugins/docker
@@ -52,6 +56,8 @@ steps:
     when:
       event:
         - tag
+    depends_on:
+    - check license
         
   - name: build helm and release chart
     image: argosnotary/argos-build:3.6.3
@@ -63,7 +69,9 @@ steps:
     - helm chart save argos/ argosnotary/argos-chart:latest
     when:
       event:
-        - tag    
+        - tag
+    depends_on:
+    - check license
       
 trigger:
   event:

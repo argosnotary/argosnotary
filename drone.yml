@@ -27,9 +27,34 @@ steps:
         - push
     depends_on:
     - check license
+    
+  - name: argos
+    image: curlimages/curl
+    pull: always
+    when:
+      event:
+        - push
+    depends_on:
+    - build integrated snapshot image
+  
+  - name: test image
+    image: curlimages/curl
+    pull: always
+    commands:
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin -k "https://argos"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
+    depends_on:
+    - argos
+    when:
+      event:
+        - push
         
   - name: build helm snapshot chart
     image: argosnotary/argos-build:3.6.3
+    environment:
+      HELM_EXPERIMENTAL_OCI: 1
     commands:
     - cd helm/charts
     - helm chart save argos/ "argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}"
@@ -58,9 +83,33 @@ steps:
         - tag
     depends_on:
     - check license
+    
+  - name: argos
+    image: curlimages/curl
+    pull: always
+    when:
+      event:
+        - tag
+    depends_on:
+    - build and release integrated image
+  
+  - name: test image
+    image: curlimages/curl
+    pull: always
+    commands:
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
+    depends_on:
+    - argos
+    when:
+      event:
+        - tag
         
   - name: build helm and release chart
     image: argosnotary/argos-build:3.6.3
+    environment:
+      HELM_EXPERIMENTAL_OCI: 1
     commands:
     - cd helm/charts
     - helm chart save argos/ "argosnotary/argos-chart:${DRONE_TAG}"

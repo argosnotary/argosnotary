@@ -28,7 +28,7 @@ steps:
     depends_on:
     - check license
     
-  - name: argos
+  - name: argossnashot
     image: curlimages/curl
     pull: always
     when:
@@ -37,7 +37,7 @@ steps:
     depends_on:
     - build integrated snapshot image
   
-  - name: test image
+  - name: test snapshot image
     image: curlimages/curl
     pull: always
     commands:

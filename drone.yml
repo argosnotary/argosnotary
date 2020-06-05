@@ -28,7 +28,7 @@ steps:
     depends_on:
     - check license
     
-  - name: argossnashot
+  - name: argossnaphot
     image: argosnotary/argos-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
     when:
@@ -46,24 +46,10 @@ steps:
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
     depends_on:
-    - argos
+    - argossnaphot
     when:
       event:
         - push
-        
-  - name: build helm snapshot chart
-    image: argosnotary/argos-build:3.6.3
-    environment:
-      HELM_EXPERIMENTAL_OCI: 1
-    commands:
-    - cd helm/charts
-    - helm chart save argos/ "argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}"
-    - helm chart push "argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}"
-    when:
-      event:
-        - push
-    depends_on:
-    - check license
         
   - name: build and release integrated image
     image: plugins/docker
@@ -105,22 +91,6 @@ steps:
     when:
       event:
         - tag
-        
-  - name: build helm and release chart
-    image: argosnotary/argos-build:3.6.3
-    environment:
-      HELM_EXPERIMENTAL_OCI: 1
-    commands:
-    - cd helm/charts
-    - helm chart save argos/ "argosnotary/argos-chart:${DRONE_TAG}"
-    - helm chart save argos/ argosnotary/argos-chart:latest
-    - helm chart push "argosnotary/argos-chart:${DRONE_TAG}"
-    - helm chart save argos/ argosnotary/argos-chart:latest
-    when:
-      event:
-        - tag
-    depends_on:
-    - check license
       
 trigger:
   event:

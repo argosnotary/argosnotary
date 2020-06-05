@@ -18,14 +18,14 @@ version: '3.1'
 
 services:
   argos-frontend:
-    image: argosnotary/argos-frontend:0.0.1-RC5
+    image: argosnotary/argos-frontend:0.0.1-RC6
     environment:
       - BACKEND_URL=http://argos-service:8080
     ports:
       - 80:80
 
   argos-service:
-    image: argosnotary/argos-service:0.0.1-RC5
+    image: argosnotary/argos-service:0.0.1-RC6
     environment:
       spring.data.mongodb.uri: mongodb://mongodb/test
       spring.security.oauth2.client.registration.azure.clientId: client-id
@@ -40,7 +40,7 @@ services:
       - 8080:8080
       
   oauth-stub:
-    image: argosnotary/argos-integration-test-stub:0.0.1-RC5
+    image: argosnotary/argos-integration-test-stub:0.0.1-RC6
     ports:
       - 8087:8080
 

@@ -16,7 +16,7 @@
 #
 
 set -x
-ARGOS_VERSION="0.0.1-RC5"
+ARGOS_VERSION="0.0.1-RC6"
 REGISTRY="argosnotary"
 IMAGE_NAME="argos-snapshot"
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)

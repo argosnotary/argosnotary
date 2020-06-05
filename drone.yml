@@ -5,7 +5,7 @@ type: docker
 
 steps:
   - name: check license
-    image: argosnotary/argos-build:latest
+    image: argosnotary/argos-build:3.6.3
     commands:
     - mvn license:check
  
@@ -15,13 +15,23 @@ steps:
       context: docker
       dockerfile: docker/Dockerfile
       repo: argosnotary/argos-snapshot
-      tags: ${DRONE_BRANCH/\//_}${DRONE_TAG}
+      tags: ${DRONE_TAG:-${DRONE_BRANCH//\//_}}
       build_args:
-        - ARGOS_VERSION=0.0.1-RC5
+        - ARGOS_VERSION=0.0.1-RC6
       username:
         from_secret: docker_login_user
       password:
         from_secret: docker_login_token
+    when:
+      event:
+        - push
+        
+  - name: build helm snapshot chart
+    image: argosnotary/argos-build:3.6.3
+    commands:
+    - cd helm/charts
+    - helm chart save argos/ argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
+    - helm chart push argosnotary/argos-chart-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     when:
       event:
         - push
@@ -41,7 +51,19 @@ steps:
         from_secret: docker_login_token
     when:
       event:
-        - tag     
+        - tag
+        
+  - name: build helm and release chart
+    image: argosnotary/argos-build:3.6.3
+    commands:
+    - cd helm/charts
+    - helm chart save argos/ argosnotary/argos-chart:${DRONE_TAG}
+    - helm chart save argos/ argosnotary/argos-chart:latest
+    - helm chart push argosnotary/argos-chart:${DRONE_TAG}
+    - helm chart save argos/ argosnotary/argos-chart:latest
+    when:
+      event:
+        - tag    
       
 trigger:
   event:

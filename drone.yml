@@ -31,6 +31,7 @@ steps:
   - name: argossnaphot
     image: argosnotary/argos-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
+    detach: true
     when:
       event:
         - push
@@ -72,6 +73,7 @@ steps:
   - name: argos
     image: argosnotary/argos:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
+    detach: true
     when:
       event:
         - tag

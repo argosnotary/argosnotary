@@ -1,16 +1,23 @@
 
-global:
-  # choose between minikube, gke, aks
-  platform: minikube
-  
 oauth-stub:
   enabled: true
+
+argos-service:
+  secret:
+    mongodb_uri:
+      username: root
+      password: password
+      dbchart: mongodb
+      dbconn: "argos?authSource=admin"
+  image:
+    repository: argosnotary/argos-service-snapshot
+    tag: mongobee-to-mongock
 
 mongodb:
   replicaSet:
     enabled: false
     key: password
-  usePassword: false
+  mongodbRootPassword: password
   persistence:
     size: 1Gi
 
@@ -21,7 +28,7 @@ ingress:
       paths:
         - /
   tls:
-    - secretName: argos-frontend-minikube-tls
+    - secretName: argos-tls-default-secret
       hosts:
         - argos-frontend.minikube.local
   

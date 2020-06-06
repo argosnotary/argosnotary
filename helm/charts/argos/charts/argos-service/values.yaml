@@ -15,9 +15,13 @@ aad:
   frontendRedirectBasePath: 'https://argos-frontend.minikube.local'
   jwt_token: 'Z2LcVpgCuGtpb5rBDNIIWGe8RXqYGWDpWFjWhYQUS2Z8rjE2/GTJlu0s6BRYG0Mn0kV8StC9cFE83Jkl68RCkw=='
   
-mongodb_uri:
-  dbchart: mongodb
-  dbconn: "argosnotary"
+secret:
+  mongodb_uri:
+    username: your_db_username
+    password: your_db_password
+    dbchart: mongodb
+    dbport: 27017
+    dbconn: "argos?authSource=admin"
 
 image:
   repository: argosnotary/argos-service

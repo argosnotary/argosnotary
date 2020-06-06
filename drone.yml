@@ -41,10 +41,9 @@ steps:
     image: curlimages/curl
     pull: always
     commands:
-    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos"
-    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin -k "https://argos"
-    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
-    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot:8080/actuator/health"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot:8087"
     depends_on:
     - build integrated snapshot image
     when:

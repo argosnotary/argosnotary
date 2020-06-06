@@ -46,7 +46,7 @@ steps:
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
     depends_on:
-    - argossnaphot
+    - build integrated snapshot image
     when:
       event:
         - push
@@ -87,7 +87,7 @@ steps:
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
     depends_on:
-    - argos
+    - build and release integrated image
     when:
       event:
         - tag

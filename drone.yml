@@ -62,7 +62,9 @@ steps:
       - ${DRONE_TAG}
       - latest
       build_args:
-        - ARGOS_VERSION=${DRONE_TAG}
+      build_args:
+        - ARGOS_FRONTEND_VERSION=0.0.1-RC6
+        - ARGOS_SERVICE_VERSION=0.0.1-RC7
       username:
         from_secret: docker_login_user
       password:

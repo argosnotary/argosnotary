@@ -25,7 +25,7 @@ services:
       - 80:80
 
   argos-service:
-    image: argosnotary/argos-service:0.0.1-RC6
+    image: argosnotary/argos-service:0.0.1-RC7
     environment:
       spring.data.mongodb.uri: mongodb://mongodb/test
       spring.security.oauth2.client.registration.azure.clientId: client-id
@@ -40,7 +40,7 @@ services:
       - 8080:8080
       
   oauth-stub:
-    image: argosnotary/argos-integration-test-stub:0.0.1-RC6
+    image: argosnotary/argos-integration-test-stub:0.0.1-RC7
     ports:
       - 8087:8080
 

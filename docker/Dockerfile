@@ -14,11 +14,12 @@
 # limitations under the License.
 #
 
-ARG ARGOS_VERSION
+ARG ARGOS_FRONTEND_VERSION
+ARG ARGOS_SERVICE_VERSION
 
-FROM argosnotary/argos-frontend:${ARGOS_VERSION} as frontend
+FROM argosnotary/argos-frontend:${ARGOS_FRONTEND_VERSION} as frontend
 
-FROM argosnotary/argos-service:${ARGOS_VERSION} as argos-service
+FROM argosnotary/argos-service:${ARGOS_SERVICE_VERSION} as argos-service
 
 FROM argosnotary/argos-integration-test-stub:master as oauth-stub
 

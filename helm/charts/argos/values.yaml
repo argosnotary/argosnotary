@@ -9,13 +9,10 @@ argos-service:
       password: password
       dbchart: mongodb
       dbconn: "argos?authSource=admin"
-  image:
-    repository: argosnotary/argos-service-snapshot
-    tag: mongobee-to-mongock
 
 mongodb:
   replicaSet:
-    enabled: false
+    enabled: true
     key: password
   mongodbRootPassword: password
   persistence:

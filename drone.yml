@@ -17,7 +17,8 @@ steps:
       repo: argosnotary/argos-snapshot
       tags: ${DRONE_TAG:-${DRONE_BRANCH//\//_}}
       build_args:
-        - ARGOS_VERSION=0.0.1-RC6
+        - ARGOS_FRONTEND_VERSION=0.0.1-RC6
+        - ARGOS_SERVICE_VERSION=0.0.1-RC7
       username:
         from_secret: docker_login_user
       password:
@@ -44,7 +45,7 @@ steps:
     commands:
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot"
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot:8080/actuator/health"
-    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot:8087"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argossnaphot:8087/oauth2/v2.0/authorize-manual"
     depends_on:
     - build integrated snapshot image
     when:
@@ -57,7 +58,9 @@ steps:
       context: docker
       dockerfile: docker/Dockerfile
       repo: argosnotary/argos
-      auto_tag: true
+      tags:
+      - ${DRONE_TAG}
+      - latest
       build_args:
         - ARGOS_VERSION=${DRONE_TAG}
       username:
@@ -86,7 +89,7 @@ steps:
     commands:
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos"
     - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8080/actuator/health"
-    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087"
+    - curl --retry-connrefused --retry 10 --retry-delay 0 -u admin:admin "http://argos:8087/oauth2/v2.0/authorize-manual"
     depends_on:
     - build and release integrated image
     when:

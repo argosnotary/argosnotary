@@ -17,25 +17,25 @@ steps:
       repo: argosnotary/argos-snapshot
       tags: ${DRONE_TAG:-${DRONE_BRANCH//\//_}}
       build_args:
-        - ARGOS_FRONTEND_VERSION=0.0.1-RC6
-        - ARGOS_SERVICE_VERSION=0.0.1-RC7
+        - ARGOS_FRONTEND_VERSION=0.0.1-RC8
+        - ARGOS_SERVICE_VERSION=0.0.1-RC8
       username:
         from_secret: docker_login_user
       password:
         from_secret: docker_login_token
     when:
       event:
-        - push
+      - push
     depends_on:
     - check license
-    
+
   - name: argossnaphot
     image: argosnotary/argos-snapshot:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
     detach: true
     when:
       event:
-        - push
+      - push
     depends_on:
     - build integrated snapshot image
   
@@ -59,9 +59,8 @@ steps:
       dockerfile: docker/Dockerfile
       repo: argosnotary/argos
       tags:
-      - ${DRONE_TAG}
+      - ${DRONE_TAG:-${DRONE_BRANCH//\//_}}
       - latest
-      build_args:
       build_args:
         - ARGOS_FRONTEND_VERSION=0.0.1-RC8
         - ARGOS_SERVICE_VERSION=0.0.1-RC8
@@ -69,14 +68,14 @@ steps:
         from_secret: docker_login_user
       password:
         from_secret: docker_login_token
-    when:
-      event:
-        - tag
     depends_on:
     - check license
+    when:
+      event:
+      - tag
     
   - name: argos
-    image: argosnotary/argos:${DRONE_TAG}
+    image: argosnotary/argos:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
     pull: always
     detach: true
     when:

@@ -16,4 +16,4 @@
 #
 
 
-exec /sbin/setuser mongodb /usr/lib/argos/mongo_entry.sh mongod
+exec /sbin/setuser mongodb /usr/lib/argos/mongo_entry.sh mongod --bind_ip_all --replSet rs0

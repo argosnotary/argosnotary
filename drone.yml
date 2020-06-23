@@ -63,8 +63,8 @@ steps:
       - latest
       build_args:
       build_args:
-        - ARGOS_FRONTEND_VERSION=0.0.1-RC6
-        - ARGOS_SERVICE_VERSION=0.0.1-RC7
+        - ARGOS_FRONTEND_VERSION=0.0.1-RC8
+        - ARGOS_SERVICE_VERSION=0.0.1-RC8
       username:
         from_secret: docker_login_user
       password:
@@ -76,7 +76,7 @@ steps:
     - check license
     
   - name: argos
-    image: argosnotary/argos:${DRONE_TAG:-${DRONE_BRANCH//\//_}}
+    image: argosnotary/argos:${DRONE_TAG}
     pull: always
     detach: true
     when:

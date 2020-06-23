@@ -200,6 +200,7 @@ ADD resources/service/oauth/run.sh /etc/service/oauth/run
 RUN chmod +x /etc/service/oauth/run
 
 COPY mongo_entry.sh /usr/lib/argos/
+RUN echo "rs.initiate({'_id':'rs0','members':[{'_id':0,'host':'127.0.0.1:27017'}]});" > /docker-entrypoint-initdb.d/replica-init.js
 
 RUN chown -R nginx:nginx /var/log/nginx /var/lib/nginx \
     && chmod -R 755 /usr/lib/argos

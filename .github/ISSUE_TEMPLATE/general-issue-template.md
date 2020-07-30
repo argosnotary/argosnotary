@@ -2,7 +2,7 @@
 name: General issue template
 about: General issue template for backlog items, bugs and feature requests
 title: ''
-labels: ''
+labels: 'Create issue'
 assignees: ''
 
 ---

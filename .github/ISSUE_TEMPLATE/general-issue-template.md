@@ -1,6 +1,6 @@
 ---
 name: Generic
-about: General issue template for backlog items, bugs and feature requests
+about: General issue template for enhancements, bugs and feature requests
 title: ''
 labels: ''
 assignees: ''

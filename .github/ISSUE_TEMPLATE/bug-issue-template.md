@@ -1,14 +1,11 @@
 ---
-name: Generic
-about: General issue template for enhancements, bugs and feature requests
+name: Bug
+about: Issue template for bugs
 title: ''
 labels: ''
 assignees: ''
 
 ---
-
-**What kind of request is this (question/bug/feature request/enhancement):**
-
 
 **Steps to reproduce (least amount of steps as possible):**
 

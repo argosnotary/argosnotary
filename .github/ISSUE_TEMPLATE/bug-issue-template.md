@@ -18,3 +18,5 @@ assignees: ''
 
 **Environment information**
 - Argos Notary version of the relevant component
+
+**Estimate effort needed in hours:**

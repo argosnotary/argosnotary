@@ -1,4 +1,4 @@
-Copyright (C) 2020 Argos Notary Cooperative
+Copyright (C) 2020 Argos Notary Coöperatie UA
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
